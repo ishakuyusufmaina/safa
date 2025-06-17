@@ -1,7 +1,7 @@
 {
   "name": "Al-Hiddayah Islamic School",
   "short_name": "Al-Hiddayah",
-  "start_url": "/",
+  "start_url": "signin.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#004aad",
