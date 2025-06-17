@@ -143,7 +143,7 @@ footer small {
  
   <header>
     <img src="logo.jpg" alt="School Logo" />
-    <h1>Salim Global Integrated Academy Maiduguri</h1>
+    <h1>AL-HIDAYAH ISLAMIC SCHOOL</h1>
   </header>
    <main>
   <div class="card">
@@ -174,7 +174,7 @@ footer small {
   measurementId: "G-3MGCDH4FRF"
 };
  
-  const schoolId = "salim";
+  const schoolId = "alhidayah";
     const app = initializeApp(firebaseConfig);
       const analytics = getAnalytics(app);
       const auth = getAuth(app);
@@ -206,11 +206,13 @@ footer small {
       // redirect or load user-specific content here
     }
   
-  loginBtn.onclick = signIn;
+ const logBtn = document.getElementById("loginBtn")
+  logBtn.onclick = signIn;
 
   let reg = /.*@/;
   
     function signIn() {
+     // logBtn.textContent = "Logging.."
       const username = document.getElementById("email").value;
       const email = username.replace(/@.*/, "")+`@teacher.${schoolId}`;
       const role = username.replace(reg, "");
