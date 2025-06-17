@@ -2,9 +2,13 @@
   "name": "Al-Hiddayah Islamic School",
   "short_name": "Al-Hiddayah",
   "start_url": "/signin.html",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#004aad",
+  
+  "description": "An educational platform from Salim Global Integrated Academy, Maiduguri.",
+
   "icons": [
     {
       "src": "favicon-32x32.png",
