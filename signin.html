@@ -3,8 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <script src="config.js"></script>
 
-  <title>School - Login</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="asset/favicon-180x180.png">
+<link rel="icon" type="image/png" sizes="32x32" href="asset/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="asset/favicon-16x16.png">
+<link rel="manifest" href="asset/site.webmanifest">
+<link rel="mask-icon" href="asset/favicon-512x512.png" color="#ffffff">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="asset/mstile-150x150.png">
+<!-- Light theme -->
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+
+<!-- Dark theme -->
+<meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)">
+
+  <title>Capital - Login</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
  
   <style>
@@ -143,7 +157,7 @@ footer small {
  
   <header>
     <img src="logo.jpg" alt="School Logo" />
-    <h1>Al-hidayah Islamic School</h1>
+    <h1>Maiduguri Capital School</h1>
   </header>
    <main>
   <div class="card">
@@ -173,8 +187,9 @@ footer small {
   appId: "1:596350496353:web:84c66c351700ddf0824420",
   measurementId: "G-3MGCDH4FRF"
 };
- 
-  const schoolId = "alhidayah";
+
+     loginBtn.textContent = "Please wait..";
+//  const schoolId = "alhidayah";
     const app = initializeApp(firebaseConfig);
       const analytics = getAnalytics(app);
       const auth = getAuth(app);
@@ -183,7 +198,8 @@ footer small {
   let teachersRef = doc(db, schoolId, "teachers");
   let teacherDoc = await getDoc(teachersRef);
    let teachers = teacherDoc.exists()? teacherDoc.data() : {};
-  
+
+      loginBtn.textContent = "Login";
   var schoolGeneratedUsername;
   
  async function onLoginSuccess(user, role) {
@@ -191,8 +207,8 @@ footer small {
    
    if (!teachers[schoolGeneratedUsername]){
      if (!(user.email=="dev@teacher."+schoolId)){
-     await deleteUser(user);
-     alert("Not on staff list, talk to admin if you think this is a mistake.");
+    // await deleteUser(user);
+     alert("Not on staff list, talk to admin if you think this is a mistake");
      return;
      }
    }
@@ -225,12 +241,13 @@ footer small {
       // redirect or load user-specific content here
     }
   
-  loginBtn.onclick = signIn;
+  const logBtn = document.getElementById("loginBtn");
+  logBtn.onclick = signIn;
 
   let reg = /.*@/;
   
   async function signIn() {
-      
+      logBtn.textContent = "Logging..";
       const username = document.getElementById("email").value;
       const email = username.replace(/@.*/, "")+`@teacher.${schoolId}`;
      schoolGeneratedUsername = username.replace(/@.*/, "");
@@ -240,6 +257,7 @@ footer small {
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           onLoginSuccess(userCredential.user, role);
+          logBtn.textContent = "Login";
         })
         .catch( async (error) => {
           let user = teachers[schoolGeneratedUsername];
@@ -255,8 +273,12 @@ footer small {
       
           }
           alert("Login failed: " + error.code);
+          logBtn.textContent = "Login";
         });
     }
+
+      
+      
   </script>
   
 </body>
