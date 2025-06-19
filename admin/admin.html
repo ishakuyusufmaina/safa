@@ -241,7 +241,7 @@
 
 
 </head>
-<body>
+<body >
       
   <header>
     <hr>
@@ -261,7 +261,7 @@
     <div id="date"></div>
     <hr>
   </header>
-  <main>
+  <main id="main" style="display:none">
   <h1>Admin  </h1>
     
     <div class="card-container">
@@ -504,6 +504,7 @@ adminFunctions.forEach(fx=>{
     let elm = document.querySelector("."+fx);
     if (elm) elm.style = "display: block";
   })
+    main.style.display = "block";
     
   })
   </script>
