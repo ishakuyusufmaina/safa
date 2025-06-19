@@ -4,12 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <!-- Favicon & Manifest -->
-  <link rel="apple-touch-icon" sizes="180x180" href="asset/favicon-180x180.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="asset/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="asset/favicon-16x16.png">
-  <link rel="manifest" href="asset/manifest.json">
-  <link rel="mask-icon" href="asset/favicon-512x512.png" color="#ffffff">
+<!-- Favicon links -->
+<link rel="icon" type="image/png" sizes="32x32" href="asset/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="asset/favicon-48x48.png">
+<link rel="icon" type="image/png" sizes="64x64" href="asset/favicon-64x64.png">
+<link rel="icon" type="image/png" sizes="128x128" href="asset/favicon-128x128.png">
+<link rel="icon" type="image/png" sizes="192x192" href="asset/favicon-192x192.png">
+<link rel="icon" type="image/png" sizes="256x256" href="asset/favicon-256x256.png">
+<link rel="icon" type="image/png" sizes="512x512" href="asset/favicon-512x512.png">
+
+<!-- Web App Manifest -->
+<link rel="manifest" href="asset/manifest.json">
+
+<!-- Optional: Apple Touch Icon -->
+<link rel="apple-touch-icon" sizes="192x192" href="asset/favicon-192x192.png">
   <meta name="msapplication-TileColor" content="#ffffff">
   <meta name="msapplication-TileImage" content="asset/mstile-150x150.png">
   <meta name="theme-color" content="#ffffff">
@@ -82,7 +90,7 @@
 </head>
 <body>
 
-  <h1>Welcome to <small>SIB</small> AL—HIDAYAH ISLAMIC SCHOOL Installation</h1>
+  <h1>Welcome to <small>SIB</small> Future Assured College Installation</h1>
   <button id="install-btn">Install App</button>
 
   <script>
@@ -100,10 +108,10 @@
         deferredPrompt.prompt();
         const { outcome } = await deferredPrompt.userChoice;
         if (outcome === 'accepted') {
-          alert("Capital School Version of SIB is being installed on your device, patience.");
+          alert("Future Assured College Maiduguri Version of SIB is being installed on your device, patience.");
           console.log('User accepted the install prompt');
         } else {
-          alert("Thank you for dismissing installation of Capital School Version of SIB on your device.");
+         // alert("Thank you for dismissing installation of Capital School Version of SIB on your device.");
           console.log('User dismissed the install prompt');
         }
         deferredPrompt = null;
