@@ -1,7 +1,7 @@
 {
   "name": "Future Assured College Maiduguri",
   "short_name": "Future Assured",
-  "start_url": "../signin.html",
+  "start_url": "/signin.html",
   "scope": "/",
   "icons": [
     {
