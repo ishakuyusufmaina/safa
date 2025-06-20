@@ -2,7 +2,7 @@
   "name": "Future Assured College Maiduguri",
   "short_name": "Future Assured",
   "start_url": "signin.html",
-  
+  "scope": "/",
   "icons": [
     {
       "src": "favicon-48x48.png",
@@ -36,6 +36,6 @@
     }
   ],
   "theme_color": "#0078D7",
-  "background_color": "#0078D7",
+  "background_color": "#ffffff",
   "display": "standalone"
 }
