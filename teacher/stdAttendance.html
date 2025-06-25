@@ -119,7 +119,8 @@ display: inline-block;
     
   </table>
   <button id="submitBtn">Submit</button>
-  
+  <script src="/config.js></script>
+
     <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-analytics.js";
@@ -140,7 +141,7 @@ display: inline-block;
       const auth = getAuth(app);
     const db = getFirestore(app);
   
-  const schoolId = "fac";
+ // const schoolId = "fac";
     let sessionsRef = doc(db, schoolId, "sessions");
 let teachersRef = doc(db, schoolId, "teachers");
   let teachersDoc = await getDoc(teachersRef);
