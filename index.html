@@ -81,6 +81,7 @@
   
   <script src="config.js"></script>
   <script>
+    sName.textContent = schoolName;
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/service-worker.js')
       .then(reg => console.log('Service Worker registered.', reg))
@@ -91,7 +92,7 @@
 </head>
 <body>
 
-  <h1>Welcome to <small>SIB</small> Treasures Richfield College Installation</h1>
+  <h1>Welcome to <small>SIB</small> <span id="sName"></span> Installation</h1>
   <button id="install-btn">Install App</button>
 
   <script>
