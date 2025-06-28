@@ -1,3 +1,2 @@
-const schoolId = "treasures";
-const schoolName = "Treasures Richfield College Maiduguri";
-
+const schoolId = "almadeenah";
+const schoolName = "Almadeenah International Schools Maiduguri";
