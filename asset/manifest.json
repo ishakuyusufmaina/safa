@@ -1,7 +1,7 @@
 {
   "name": "Al-Madinah International Model Schools",
   "short_name": "Al-Madinah",
-  "start_url": "/",
+  "start_url": "/signin.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#0b3d91",
