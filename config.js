@@ -1,3 +1,3 @@
-const schoolId = "albarhan";
+const schoolId = "albahar";
 const schoolName = "AL-BAHAR ISLAMIC SCHOOL 
   ";
