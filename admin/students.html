@@ -105,7 +105,7 @@
   <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-analytics.js";
-  import {getFirestore, doc, setDoc, getDoc} from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
+  import {getFirestore, doc, setDoc, getDoc, runTransaction} from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
   import {getAuth, signOut, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
      // import {getDatabase, set, ref, onValue, child, get } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
  /*     const firebaseConfig = {
@@ -227,7 +227,7 @@ add.onclick = e=>{
    // let subjs = await getSubjects();
     let stdsRef = doc(db, schoolId, session, clas, "students");
     
-    let students = Array.from(document.querySelectorAll(".record")).map( row=> {
+   /* let students = Array.from(document.querySelectorAll(".record")).map( row=> {
       let name = row.querySelector(".name").textContent
       let gender = row.querySelector(".gender").value
       return {
@@ -236,11 +236,20 @@ add.onclick = e=>{
         //subjects: subjs
       }
       
-    });
+    });*/
     if (!currentStudents) return;
     if (!Object.values(currentStudents).length) return;
     
-     await setDoc(stdsRef, currentStudents);
+    // await setDoc(stdsRef, currentStudents);
+ let students = currentStudents;
+    await runTransaction(db, async transaction=>{
+     let stdsDoc = await transaction.get(stdsRef);
+     let stds = stdsDoc.exists()? stdsDoc.data() : {};
+     Object
+       .keys(students)
+       .forEach(k=>stds[k] = students[k]);
+    await transaction.set(stdsRef, stds);
+   });
     alert("save");
     console.log(JSON.stringify(students));
      
