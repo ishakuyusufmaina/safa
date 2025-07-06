@@ -1,7 +1,7 @@
 {
   "name": "Kauna Private School",
   "short_name": "Kauna School",
-  "start_url": "/",
+  "start_url": "/signin.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#800000",
