@@ -1,7 +1,7 @@
 {
     "name": "SAFA Islamic Science Academy",
     "short_name": "SISA",
-    "start_url": "signin.html",
+    "start_url": "/signin.html",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#003399",
