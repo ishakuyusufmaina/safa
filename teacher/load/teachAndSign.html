@@ -175,15 +175,15 @@
   
   let d = new Date();
   let year = d.getFullYear();
-  let month = d.getMonth() + 1;
+  let month = d.getMonth();
   let day = d.getDate();
-  let sec = d.getSeconds()+1;
-  let min = d.getMinutes()+1;
-  let h = d.getHours()+1;
+  let sec = d.getSeconds();
+  let min = d.getMinutes();
+  let h = d.getHours();
   let getTime = ()=>{
-  let sec = d.getSeconds()+1;
-  let min = d.getMinutes()+1;
-  let h = d.getHours()+1;
+  let sec = d.getSeconds();
+  let min = d.getMinutes();
+  let h = d.getHours();
     return {sec, min, h}
   }
   //time.innerHTML = `${h} : {}{
