@@ -376,7 +376,7 @@ add.onclick = e=>{
        .keys(students)
        .forEach(async k=>{
            let localStd = students[k];
-           let globalStd = stds[k];
+           let globalStd = stds[k]??students[k];
            let changed = false;
            for (const id in localStd){
                changed = localStd[id] !== globalStd[id];
