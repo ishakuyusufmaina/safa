@@ -62,7 +62,9 @@
     
     <button type="submit" id="recBtn">Record</button>
     </form>
-  <script src="../utility.js"></script>
+  <script src="utility.js"></script>
+  <script src="/config.js"></script>
+  <script src="/batch2.js"></script>
   <script type="module">
   /*
     */
@@ -71,7 +73,7 @@
   import {getFirestore, serverTimestamp, query, limit, where, getDocs, collection, doc, setDoc, getDoc, onSnapshot} from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
   import {getAuth, signOut, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
      // import {getDatabase, set, ref, onValue, child, get } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
-      const firebaseConfig = {
+  /*    const firebaseConfig = {
   apiKey: "AIzaSyCm_DSZaYVQCt0ubBwRkE9nOTryJayxH0w",
   authDomain: "school-in-the-box.firebaseapp.com",
   projectId: "school-in-the-box",
@@ -79,7 +81,7 @@
   messagingSenderId: "596350496353",
   appId: "1:596350496353:web:84c66c351700ddf0824420",
   measurementId: "G-3MGCDH4FRF"
-};
+};*/
   
   
   const schoolId="almadeenah";
