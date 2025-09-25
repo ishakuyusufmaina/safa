@@ -519,7 +519,7 @@ add.onclick = e=>{
                 upStd.name = student.name.toLowerCase();
                 upStd.gender = student.gender.toLowerCase();
                 upStd.religion = student.religion?.toLowerCase()?? "";
-                //delete stds[id] 
+                delete stds[id] 
                 stds[lastStdId] = student;
                 await transaction.set(doc(db, schoolId, "db", "students", upStd.id.replaceAll("/", "_")), upStd);
                 await transaction.set(stdsRef, stds);
