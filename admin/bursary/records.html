@@ -319,7 +319,7 @@ const terms = ["first term", "second term", "third term"];
   if (student) conditions.push(where("student", "==", student));
   if (term) conditions.push(where("term", "==", term));
   if (year) conditions.push(where("year", "==", year));
-  if (className) conditions.push(where("class", "==", className));
+  if (className) conditions.push(where("class", "==", className.toLowerCase()));
   q = query(q, ...conditions);
 
   const snap = await getDocs(q);
