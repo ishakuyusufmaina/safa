@@ -152,6 +152,9 @@
         height:0;
         width: 0;
     }
+  .name {
+    border: 1px solid white;
+  }
   </style>
 </head>
 <body>
@@ -180,12 +183,12 @@
   <button id="add">Add</button>
   <button id="saveBtn">Save</button>
 
-  <script src="/config.js"></script>
- <script src="/batch2.js"></script>
+  <script src="../config.js"></script>
+ <script src="../batch2.js"></script>
   <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-analytics.js";
-  import {getFirestore, getDocs, getCountFromServer, collection, query, where, updateDoc, arrayUnion, doc, setDoc, getDoc, runTransaction} from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
+  import {getFirestore, deleteDoc, getDocs, getCountFromServer, collection, query, where, updateDoc, arrayUnion, doc, setDoc, getDoc, runTransaction} from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
   import {getAuth, signOut, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
     /*  const firebaseConfig = {
   apiKey: "AIzaSyCm_DSZaYVQCt0ubBwRkE9nOTryJayxH0w",
@@ -272,7 +275,7 @@ let sectionDoc = await getDoc(sectionRef);
       <img src="${picURL}">
       <input type="file" accept="image/*" capture="environment" id="cameraInput">
       </td>
-      <td>${result.id}</td>
+      <td class="id">${result.id??"Not Yet Generated"}</td>
        <td class="name" contenteditable>
         ${result.name.toUpperCase()}
       </td> 
@@ -284,6 +287,14 @@ let sectionDoc = await getDoc(sectionRef);
         </select>
     </td>    
       `;
+     row.querySelector(".id").ondblclick = async e=>{
+       if (!result.id) return;
+       if (window.confirm("Are you sure you want to delete this student?")); {
+         let docId = result.id.replaceAll("/", "_");
+         await deleteDoc(doc(db, schoolId, "db", "students", docId));
+         alert("Done!");
+       }
+     }
       container.appendChild(row);
       let psp = row.querySelector(".passport");
       let imgIn = psp.querySelector("input");
@@ -308,6 +319,9 @@ let sectionDoc = await getDoc(sectionRef);
         preview.src = data.secure_url; // Final Cloudinary URL
         console.log("Uploaded to Cloudinary:", data);
         result.picURL = data.secure_url;
+       /* if (result.id){
+          await setDoc(doc(db, schoolId, "db", "students", id.replaceAll("/", "_")), {picURL: data.secure_url}, {merge:true});
+        }*/
         alert("done!");
       } catch (err) {
         alert("Upload failed: " + err.message);
@@ -320,11 +334,12 @@ let sectionDoc = await getDoc(sectionRef);
       let id = "std"+result.sn;
       let nameIn = row.querySelector(".name");
       nameIn.oninput = e=>{
-          result.name = nameIn.textContent;
+          result.name = nameIn.textContent.toLowerCase().trim();
+        result.names = result.name.split(" ");
       }
       let genderIn = row.querySelector(".gender");
       genderIn.onchange = e=>{
-          result.gender = genderIn.value;
+          result.gender = genderIn.value.toLowerCase();
       }
     // if (result.gender.toLowerCase()[0]=="m" || result.gender.toLowerCase()[0] == "f") 
       console.log(result.gender);
@@ -346,57 +361,29 @@ add.onclick = e=>{
         window.print();
     }*/
   saveBtn.onclick = async e=>{
-    
-    
     let clas = key(classSelect.value);
     let session = key(sessionSelect.value);
     if (!(clas && session)) return;
-   // let subjs = await getSubjects();
-    let stdsRef = doc(db, schoolId, session, clas, "students");
-    
-   /* let students = Array.from(document.querySelectorAll(".record")).map( row=> {
-      let name = row.querySelector(".name").textContent
-      let gender = row.querySelector(".gender").value
-      return {
-        name: name,
-        gender: gender
-        //subjects: subjs
-      }
-      
-    });*/
+    let stdsRef = doc(db, schoolId, session, clas, "students");   
     if (!currentStudents) return;
     if (!Object.values(currentStudents).length) return;
     
-    // await setDoc(stdsRef, currentStudents);
- let students = currentStudents;
     await runTransaction(db, async transaction=>{
-     let stdsDoc = await transaction.get(stdsRef);
-     let stds = stdsDoc.exists()? stdsDoc.data() : {};
-     Object
-       .keys(students)
-       .forEach(async k=>{
-           let localStd = students[k];
-           let globalStd = stds[k]??students[k];
-           let changed = false;
-           for (const id in localStd){
-               changed = localStd[id] !== globalStd[id];
-               if (changed) break;
-           }
-           stds[k] =students[k];
-           if (changed){
-               console.log("changed");
-               //consistify name & gender
-               let {name, gender} = localStd;
-               let update = {name: name.toLowerCase(), gender};
-               update.names = update.name.split(" ");
-               await transaction.set(doc(db, schoolId, "db", "students", localStd.id.replaceAll("/", "_")), update, {merge: true})
-           }
-       });
-    await transaction.set(stdsRef, stds);
+      let stdsDoc = await transaction.get(stdsRef);
+      let stds = stdsDoc.exists()? stdsDoc.data() : {};
+      for (const stdId in currentStudents){
+        const localStd = currentStudents[stdId];
+        if (stds[stdId] && !isEqual(localStd, stds[stdId]) && stds[stdId].id){
+          //alert();
+         // return;
+         await transaction.update(doc(db, schoolId, "db", "students", stds[stdId].id.replaceAll("/", "_")), localStd);
+        }
+      }
+      await transaction.set(stdsRef, currentStudents);
    });
       await loadStudents();
     alert("saved!");
-    console.log(JSON.stringify(students));
+    //console.log(JSON.stringify(students));
      
   }
   
@@ -427,57 +414,57 @@ add.onclick = e=>{
     let activeYear = sessionsDoc.data().sessions[yearsNum-1].year.trim().replaceAll(" ", "");
     console.log(activeYear);
     console.log(classSelect.value);
-    let q = query(collection(db, schoolId, "db", "students"), where("classes", "array-contains", classSelect.value));
+    let q = query(collection(db, schoolId, "db", "students"), where("class", "==", cls));
     let countSnap = await getCountFromServer(q);
     let count = countSnap.data().count;
     console.log(count);
-        
+            
     let stdsRef = doc(db, schoolId, session, clas, "students");
       console.log(clas, session);
+      
     let stdsDoc = await getDoc(stdsRef);
     let stds = stdsDoc.exists()? stdsDoc.data() : {};
     //class based std id  
-    let cbsIds = Object.values(stds).filter(std => !!std.id);
+    let cbsIds = Object.values(stds).map(std => std.id).filter(id=> !!id);
     let cbCount = cbsIds.length;
      console.log(cbCount);
-    if (count > cbCount && year === activeYear) {
+      console.log(cbsIds);
+      console.log(Object.keys(stds));
+    if (count !== cbCount && year === activeYear) {
         let gStdsDoc = await getDocs(q);
         let stdIds =[];
      // return;
-    
+   
+      let gStudents = {};
         gStdsDoc.forEach(doc=>{
           
             let std = doc.data();
             let id = std.id;
-        //  console.log(id);
+            console.log(id);
             stdIds.push(id);
             if (!stds[id]) {
+              std.picURL ??="";
                let {name, gender, id, picURL} = std;
                stds[id] = {name, gender, id, picURL};
-              console.log(std.house, std.name, std.picURL);
+              console.log(std.gender, std.name, std.picURL);
            }           
         });
         let supersetIds = Array.from(new Set(cbsIds.concat(stdIds)));
-        cbsIds.forEach(id=>{
-          //  if (!stdIds.includes(id))
-             //delete stds[id]
+        Object.keys(stds)
+      .forEach(id=>{
+            if (!stdIds.includes(id))
+             delete stds[id]
+          console.log(id);
         });
-        await setDoc(stdsRef, stds);         
+      
+        await setDoc(stdsRef, stds);  
+        currentStudents = stds;  
     }
     let size = Object.values(stds).length;
     if (stdsDoc.exists() || size){
       currentStudents = size? stds : stdsDoc.data();
       
-//    let session = sessionsDoc.data().sessions.sort((a, b)=>b.no - a.no)[sessionIndex];
-   //  await setDoc(doc(db, schoolId, key(session.year+terms[session.term])), {lastStudentId: 1});
 
-     // console.log(session.year);  
-       // let sesRef = doc(db, schoolId, key(session.year+terms[session.term]));
-    //  let sesDoc = await getDoc(sesRef);
-      //  await setDoc(sesRef, {lastStudentId: 0});
-     // let stds = (await getDoc(stdsRef)).data();
-     // let lastId = sesDoc.exists()? sesDoc.data().lastStudentId?? 0 : 0;
-      //console.log(lastId); 
         
         let upgradeRef = doc(db, schoolId,"upgrade");
         
@@ -529,6 +516,13 @@ add.onclick = e=>{
           }
           addRow(student)
       } 
+      let table = document.getElementById("table");
+      let sortedRows = Array.from(table.children).sort((a, b)=>{
+        let nameA = a.querySelector(".name").textContent.trim();
+        let nameB = b.querySelector(".name").textContent.trim();
+        return nameA.localeCompare(nameB)      
+       });
+      table.append(...sortedRows);
       //  await updateDoc(upgradeRef, {upscaledClasses: arrayUnion(clas)});
         console.log("Done");
         let opt = classSelect.selectedOptions[0];
@@ -538,11 +532,32 @@ add.onclick = e=>{
     }
   
   function key(token){
-    return token.replaceAll(" ","").replaceAll("/", "").replaceAll(",", "").toLowerCase();
+    return token.replaceAll(" ","").replaceAll("/", "").replaceAll(",", "");
+    //.toLowerCase();
   }
  
    
+function isEqual(a, b) {
+  if (a === b) return true;
 
+  if (typeof a !== "object" || a === null ||
+      typeof b !== "object" || b === null) {
+    return false;
+  }
+
+  // Handle arrays separately
+  if (Array.isArray(a) && Array.isArray(b)) {
+    if (a.length !== b.length) return false;
+    return a.every((val, i) => isEqual(val, b[i]));
+  }
+
+  const keysA = Object.keys(a);
+  const keysB = Object.keys(b);
+
+  if (keysA.length !== keysB.length) return false;
+
+  return keysA.every(key => keysB.includes(key) && isEqual(a[key], b[key]));
+}
 
   </script>
 </body>

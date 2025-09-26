@@ -4,8 +4,8 @@
 <head>
   <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <script src="/config.js"></script>
- <script src="/batch2.js"></script>
+ <script src="../config.js"></script>
+ <script src="../batch2.js"></script>
 
   <title>School Admin</title>
 <style>
@@ -350,6 +350,11 @@ z-index: 102;
       <a href="bursary/records.html">View School Fees</a>
       </div>
       
+    <div class="card feesDefaulter">
+      <h2>School Fees Defaulters</h2>
+      <a href="bursary/defaulter.html">Check Defaulters</a>
+      </div>
+      
     <!--/div>
       <div class="card">
       <h2>Fees Management</h2>
@@ -416,7 +421,8 @@ const adminFunctions = [
     "monSA",
   "feesSet",
   "feesRecord",
-  "feesView"
+  "feesView",
+  "feesDefaulter"
   ];
   
 adminFunctions.forEach(fx=>{
