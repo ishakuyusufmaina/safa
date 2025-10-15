@@ -184,7 +184,7 @@
     <table id="resultsTable">
       <thead>
         <tr>
-          <th>Student ID</th>
+          <th>Student Name</th>
           <th>Class</th>
           <th>Session</th>
           <th>Term</th>
@@ -295,10 +295,11 @@ const terms = ["first term", "second term", "third term"];
         return;
       }
       let sum = 0;
-      filtered.forEach(fee => {
+      filtered.forEach(async fee => {
+        let std = await getDoc(doc(db, schoolId, "db", "students", fee.student.replaceAll("/", "_")));
         const row = `
           <tr>
-            <td>${fee.student}</td>
+            <td>${std.data().name.toUpperCase()}</td>
             <td>${fee.class}</td>
             <td>${fee.year}</td>
             <td>${terms[fee.term]}</td>
