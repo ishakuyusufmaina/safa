@@ -202,10 +202,11 @@ let sectionRef = doc(db, schoolId, "section");
       reportCard.innerHTML = `
          <caption>
       <header>
+      <h1>اكاديمية الصفى للعلوم الاسلامية</h1>
       <h2>SAFA ISLAMIC SCIENCE ACADEMY</h2>
       <h3>MAIDUGURI BORNO STATE</h3>
       <address>
-      London Ciki Opp. Gawo Mai Lamba, Maimusari Ward, Jere LGA, Borno State.
+      London Ciki Off Gawo Mai Lamba, Maimusari Ward, Jere LGA, Borno State.
       <br>
       <i style="color:blue">hr.sisaacademy.maid@gmail.com</i>
       </address>
@@ -227,11 +228,11 @@ let sectionRef = doc(db, schoolId, "section");
          <td>GENDER: ${std.gender}</td>
       </tr>
       <tr>
-      <td>TERM: ${sessionSelect.value.split(",")[0]}</td>
+      <td>TERM: ${sessionSelect.value.split(",")[1]}</td>
       <td>CLASS: ${classSelect.value}</td>
       </tr>
       <tr>    
-      <td>SESSION: ${sessionSelect.value.split(",")[1]}</td>
+      <td>SESSION: ${sessionSelect.value.split(",")[0]}</td>
       <td>RESUMPTION: <strong><time>5<sup>th</sup> JANUARY, 2026</time></strong></td>
       </tr>
       <tr>
@@ -286,8 +287,7 @@ let sectionRef = doc(db, schoolId, "section");
       <br>
       
       COMMENT: <strong class="comment">${comnt}</strong>
-    <img id="stamp" src=${isSec(classSelect.value)? "stamp-sec.png" : "stamp-pri.png"}>
-      `;
+    <img id="stamp" src=${getURL(classSelect.value)}>`;
       wrapper.append(p);
       p.classList.add("rfooter");
       p = document.createElement("p");
@@ -351,6 +351,15 @@ let sectionRef = doc(db, schoolId, "section");
   
   function isSec(cls){
     return cls.toLowerCase()[0] == "s" || cls.toLowerCase()[0] == "j"
+  }
+    function isPri(cls){
+    return cls.toLowerCase()[0] == "p";
+  }
+  
+  function getURL(cls){
+    if (isSec(cls)) return "stamp-sec.png";
+    else if (isPri(cls)) return "stamp-pri.png";
+    else return "stamp-nur.png";
   }
   
   
@@ -583,8 +592,8 @@ text-align: center;
   }
   
     #stamp {
-    border-radius: 50%;
-    height: 100px;
+ //   border-radius: 50%;
+    height: auto;
     width: 100px;
   position: absolute;
    bottom: 10px;
